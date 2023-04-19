@@ -12,22 +12,33 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.toyproject.bookmanagement.aop.annotation.ValidAspect;
 import com.toyproject.bookmanagement.dto.auth.SignupReqDto;
+import com.toyproject.bookmanagement.service.AuthenticationService;
+
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/auth")
+@RequiredArgsConstructor
 public class AuthenticationController {
+	
+	private final AuthenticationService authenticationService;
 	
 	@PostMapping("/login")
 	public ResponseEntity<?> login(){
+		
 		return ResponseEntity.ok(null);
 	}
 	@CrossOrigin
 	@ValidAspect
-	@PostMapping("/signup")
+	@PostMapping("/signup") //valid이 알아서 검사해줌 valid와 bindingresult랑은 한세트, 전처리로 validaspect가 실행
 	public ResponseEntity<?>signup(@Valid @RequestBody SignupReqDto signupReqDto, BindingResult bindingResult){
+		authenticationService.checkDuplicatedEmail(signupReqDto.getEmail());
 		
 		return ResponseEntity.ok(null);
 	}
+	
+	
+	
 	
 	
 

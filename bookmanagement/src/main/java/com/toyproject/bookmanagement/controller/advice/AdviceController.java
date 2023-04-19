@@ -12,7 +12,7 @@ import com.toyproject.bookmanagement.exception.CustomException;
 public class AdviceController {
 	
 	@ExceptionHandler(CustomException.class)
-	public ResponseEntity<?> CustomException(CustomException e){
+	public ResponseEntity<?> CustomException(CustomException e){ // 던져진 customException 매개변수 전달
 		return ResponseEntity.badRequest().body(new ErrorResponseDto<>(e.getMessage(), e.getErrorMap()));
 	}
 
