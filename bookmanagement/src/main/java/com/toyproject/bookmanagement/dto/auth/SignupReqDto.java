@@ -1,6 +1,7 @@
 package com.toyproject.bookmanagement.dto.auth;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -8,7 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import com.toyproject.bookmanagement.entity.User;
 
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+
 
 /*
  * 정규식 ^: 정규식 시작을 의미, $:정규식 끝을 의미, 일치하는 것이 없어도 다음으로 넘어감 
@@ -25,7 +26,8 @@ import lombok.RequiredArgsConstructor;
 public class SignupReqDto {
 
 	@Email // 이메일 형식이 아니면 받아들이지 않음
-	private String email;
+	@NotBlank(message = "이메일을 입력하세요")
+	private String email; 
 
 	@Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,16}$", message = "비밀번호는 영문자, 숫자, 특수문자를 포함하여 8~ 16자로 작성") // ->정규식
 	private String password;
