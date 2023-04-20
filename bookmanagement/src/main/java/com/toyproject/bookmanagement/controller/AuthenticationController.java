@@ -33,8 +33,8 @@ public class AuthenticationController {
 	@PostMapping("/signup") //valid이 알아서 검사해줌 valid와 bindingresult랑은 한세트, 전처리로 validaspect가 실행
 	public ResponseEntity<?>signup(@Valid @RequestBody SignupReqDto signupReqDto, BindingResult bindingResult){
 		authenticationService.checkDuplicatedEmail(signupReqDto.getEmail());
-		
-		return ResponseEntity.ok(null);
+		authenticationService.signup(signupReqDto);
+		return ResponseEntity.ok().body(true);
 	}
 	
 	
