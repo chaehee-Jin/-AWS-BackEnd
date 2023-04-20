@@ -60,14 +60,16 @@
 		useGeneratedKeys="true"
 		keyProperty="userId">
 		insert into user_tb
-		values(0, #{email}, #{password},
-		#{name}, #{provider})
+		values(0, #{email}, #{password}, #{name}, #{provider})
 	</insert>
 
 	<insert id="saveAuthority"
-		parameterMap="com.toyproject.bookmanagement.entity.Authority">
+		parameterType="com.toyproject.bookmanagement.entity.Authority">
 		insert into authority_tb
 		values(0, #{userId}, #{roleId})
 
 	</insert>
+	
+	
+	
 </mapper>
