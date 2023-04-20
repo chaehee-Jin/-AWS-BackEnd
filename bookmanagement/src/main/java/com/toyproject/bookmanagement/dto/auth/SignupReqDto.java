@@ -8,6 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import com.toyproject.bookmanagement.entity.User;
 
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 /*
  * 정규식 ^: 정규식 시작을 의미, $:정규식 끝을 의미, 일치하는 것이 없어도 다음으로 넘어감 

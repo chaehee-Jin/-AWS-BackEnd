@@ -1,7 +1,15 @@
 package com.toyproject.bookmanagement.service;
 
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.toyproject.bookmanagement.dto.auth.JwtRespDto;
+import com.toyproject.bookmanagement.dto.auth.LoginReqDto;
 import com.toyproject.bookmanagement.dto.auth.SignupReqDto;
 import com.toyproject.bookmanagement.entity.Authority;
 import com.toyproject.bookmanagement.entity.User;
@@ -13,9 +21,10 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class AuthenticationService {
+public class AuthenticationService implements UserDetailsService {
 
 	private final UserRepository userRepository;
+	private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
 	public void checkDuplicatedEmail(String email) {
 		if (userRepository.findUserByEmail(email) != null) {
@@ -29,6 +38,25 @@ public class AuthenticationService {
 		userRepository.saveUser(userEntity);
 		userRepository.saveAuthority(Authority.builder().userId(userEntity.getUserId()).roleId(1).build());
 
+	}
+	//매니저가 알아볼수 있도록 만들어준다
+	public JwtRespDto signin(LoginReqDto loginReqDto) {
+		UsernamePasswordAuthenticationToken authenticationToken = new  UsernamePasswordAuthenticationToken(loginReqDto.getEmail(), loginReqDto.getPassword());
+		
+		Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+		authentication.getPrincipal();
+		return null;
+		
+	}
+	
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
+		User userEntity = userRepository.findUserByEmail(username);
+		
+		if(userEntity == null) {
+			throw new CustomException("로그인 실패", ErrorMap.builder().put("email", "사용자 정보를 확인하세요").build());
+		}
+		return null;
 	}
 
 }
