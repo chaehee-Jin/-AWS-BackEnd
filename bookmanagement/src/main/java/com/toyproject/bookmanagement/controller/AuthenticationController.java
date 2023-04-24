@@ -27,7 +27,7 @@ public class AuthenticationController {
 	@ValidAspect
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@Valid @RequestBody LoginReqDto loginReqDto, BindingResult bindingResult) {
-		
+
 		return ResponseEntity.ok(authenticationService.signin(loginReqDto));
 	}
 
@@ -38,10 +38,16 @@ public class AuthenticationController {
 		authenticationService.signup(signupReqDto);
 		return ResponseEntity.ok().body(true);
 	}
+
 	@GetMapping("/authenticated")
-	public ResponseEntity<?> authenticated(String accessToken){
-		
+	public ResponseEntity<?> authenticated(String accessToken) {
+
 		return ResponseEntity.ok().body(authenticationService.authenticated(accessToken));
+	}
+
+	@GetMapping("/Principal")
+	public ResponseEntity<?> principal(String accessToken) {
+		return ResponseEntity.ok().body(authenticationService.getPrincipal(accessToken));
 	}
 
 }
