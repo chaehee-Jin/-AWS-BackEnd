@@ -73,9 +73,13 @@ public class AuthenticationService implements UserDetailsService {
 		return PrincipalRespDto.builder()
 					.userId(userEntity.getUserId())
 					.email(userEntity.getEmail())
-					.authorities((String)claims.get("auth"))
+					.name(userEntity.getName())
+					.authorities((String)claims.get("auth"))  
 					.build();
 	}
 
 
 }
+//메니저가 데이터베이스에서 가져온 정보와 우리가 넣어준 정보를 비교하면 principal객체를 authentication객체로 변환해서 넣어줌 이것은 토큰을 만들때 넣어줌
+// accesstoken을 만들때 authentication getname은 authentication principal에서 들고옴 ->subject에다가 등록
+// claims를 가지고 올때 getsubject에서 email을 들고옴 
