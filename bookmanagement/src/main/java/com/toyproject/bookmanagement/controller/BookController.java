@@ -34,5 +34,11 @@ public class BookController {
 	public ResponseEntity<?> categories() {
 		return ResponseEntity.ok().body(bookService.getCategories());
 	}
+	@GetMapping("/book/{bookId}/like")
+	public ResponseEntity<?> getLikeCount(@PathVariable int bookId){
+		return ResponseEntity.ok().body(bookService.getLikeCount(bookId));
+		
+		
+	}
 
 }
