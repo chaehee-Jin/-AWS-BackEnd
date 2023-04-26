@@ -8,6 +8,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import com.toyproject.bookmanagement.dto.book.CategoryRespDto;
+import com.toyproject.bookmanagement.dto.book.GetBookRespDto;
 import com.toyproject.bookmanagement.dto.book.SearchBookReqDto;
 import com.toyproject.bookmanagement.dto.book.SearchBookRespDto;
 import com.toyproject.bookmanagement.repository.BookRepository;
@@ -19,6 +20,13 @@ import lombok.RequiredArgsConstructor;
 public class BookService {
 	
 	private final BookRepository bookRepository;
+	
+	public GetBookRespDto getBook(int bookId) {
+		bookRepository.getBook(bookId);
+		return bookRepository.getBook(bookId).toGetBookDto();
+		
+		
+	}
 	
 	public Map<String, Object> searchBooks(SearchBookReqDto searchBookReqDto) {
 		List<SearchBookRespDto> list = new ArrayList<>();
