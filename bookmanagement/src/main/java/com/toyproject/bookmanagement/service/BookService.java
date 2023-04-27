@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.toyproject.bookmanagement.dto.book.CategoryRespDto;
 import com.toyproject.bookmanagement.dto.book.GetBookRespDto;
+import com.toyproject.bookmanagement.dto.book.RentalListRespDto;
 import com.toyproject.bookmanagement.dto.book.SearchBookReqDto;
 import com.toyproject.bookmanagement.dto.book.SearchBookRespDto;
 import com.toyproject.bookmanagement.entity.User;
@@ -21,64 +22,80 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class BookService {
-	
+
 	private final BookRepository bookRepository;
 	private final UserRepository userRepository;
-	
+
 	public GetBookRespDto getBook(int bookId) {
 		bookRepository.getBook(bookId);
 		return bookRepository.getBook(bookId).toGetBookDto();
-		
-		
+
 	}
-	
+
 	public Map<String, Object> searchBooks(SearchBookReqDto searchBookReqDto) {
 		List<SearchBookRespDto> list = new ArrayList<>();
-		
+
 		int index = (searchBookReqDto.getPage() - 1) * 20;
 		Map<String, Object> map = new HashMap<>();
 		map.put("index", index);
 		map.put("categoryIds", searchBookReqDto.getCategoryIds());
 		map.put("searchValue", searchBookReqDto.getSearchValue());
-		
+
 		bookRepository.searchBooks(map).forEach(book -> {
 			list.add(book.toDto());
 		});
 		int totalCount = bookRepository.getTotalCount(map);
-		
+
 		Map<String, Object> responseMap = new HashMap<>();
 		responseMap.put("totalCount", totalCount);
 		responseMap.put("bookList", list);
-		
+
 		return responseMap;
 	}
-	
+
 	public List<CategoryRespDto> getCategories() {
 		List<CategoryRespDto> list = new ArrayList<>();
-		
+
 		bookRepository.getCategories().forEach(category -> {
 			list.add(category.toDto());
 		});
-		
+
 		return list;
 	}
+
 	public int getLikeCount(int bookId) {
 		return bookRepository.getLikeCount(bookId);
 	}
-	public int getLikeStatus(int bookId) {
+
+	public int getLikeStatus(int bookId, int userId) {
 		Map<String, Object> map = new HashMap<>();
 		map.put("bookId", bookId);
-		String email = SecurityContextHolder.getContext().getAuthentication().getName();
-		User userEntity = userRepository.findUserByEmail(email);
-		map.put("userId", userEntity.getUserId());
+
+		map.put("userId", userId);
+
+		return bookRepository.getLikeStatus(map);
+	}
+	public int setLike(int bookId, int userId) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("bookId", bookId);
+		map.put("userId", userId);
+
+		return bookRepository.setLike(map);
 		
-		return bookRepository.getLikeStatus(null);
+	}
+	public int disLike(int bookId, int userId) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("bookId", bookId);
+		map.put("userId", userId);
+
+		return bookRepository.disLike(map);
+	}
+	public List<RentalListRespDto> getRentalListByBookId(int bookId){
+		List<RentalListRespDto> list = new ArrayList<>();
+		bookRepository.getRentalListByBookId(bookId).forEach(rentalData -> {
+			list.add(rentalData.toDto());
+			
+		});
+		return list;
 	}
 }
-
-
-
-
-
-
-
