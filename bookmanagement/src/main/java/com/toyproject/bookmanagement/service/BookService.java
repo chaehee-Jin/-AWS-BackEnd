@@ -75,14 +75,16 @@ public class BookService {
 
 		return bookRepository.getLikeStatus(map);
 	}
+
 	public int setLike(int bookId, int userId) {
 		Map<String, Object> map = new HashMap<>();
 		map.put("bookId", bookId);
 		map.put("userId", userId);
 
 		return bookRepository.setLike(map);
-		
+
 	}
+
 	public int disLike(int bookId, int userId) {
 		Map<String, Object> map = new HashMap<>();
 		map.put("bookId", bookId);
@@ -90,12 +92,30 @@ public class BookService {
 
 		return bookRepository.disLike(map);
 	}
-	public List<RentalListRespDto> getRentalListByBookId(int bookId){
+
+	public List<RentalListRespDto> getRentalListByBookId(int bookId) {
 		List<RentalListRespDto> list = new ArrayList<>();
 		bookRepository.getRentalListByBookId(bookId).forEach(rentalData -> {
 			list.add(rentalData.toDto());
-			
+
 		});
 		return list;
 	}
+
+	public int rentalBook(int bookListId, int userId) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("bookListId", bookListId);
+		map.put("userId", userId);
+		return bookRepository.rentalBook(map);
+
+	}
+
+	public int returnBook(int bookListId, int userId) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("bookListId", bookListId);
+		map.put("userId", userId);
+		return bookRepository.returnBook(map);
+
+	}
+
 }

@@ -22,6 +22,7 @@ public class RentalList {
 				.rentalStatus(userId == 0)
 				.build();
 	}
+
 	
 	
 

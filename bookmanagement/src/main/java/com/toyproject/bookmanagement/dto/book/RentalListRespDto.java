@@ -12,3 +12,4 @@ public class RentalListRespDto {
 	private boolean rentalStatus;
 
 }
+
